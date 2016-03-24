@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiPhotoAlbum;
 import com.vk.sdk.api.model.VKApiPhotoSize;
@@ -40,34 +39,31 @@ public class GridItemAdapter extends BaseAdapter {
     private int mThumbWidth;
     private int mThumbHeigth;
 
-    public GridItemAdapter(Activity context, VKResponse response) {
+    public GridItemAdapter(GenericActivity context, JSONArray jArray) {
 
         if (context instanceof AlbumActivity) {
             mViewType = VIEW_TYPE_ALBUM;
-            mThumbWidth = (int) context.getResources().getDimension(R.dimen.album_thumb_width);
-            mThumbHeigth = (int) context.getResources().getDimension(R.dimen.album_thumb_heigth);
+            // dimensions increased by 1.2 in order to fill imageview
+            mThumbWidth = (int) (context.getResources().getDimension(R.dimen.album_thumb_width)*1.2f);
+            mThumbHeigth = (int) (context.getResources().getDimension(R.dimen.album_thumb_heigth)*1.2f);
         }
         else if (context instanceof PhotosActivity) {
             mViewType = VIEW_TYPE_PHOTO;
             mThumbWidth = (int) context.getResources().getDimension(R.dimen.photo_thumb_width);
             mThumbHeigth = (int) context.getResources().getDimension(R.dimen.photo_thumb_heigth);
         }
-
         mContext = context;
-
+        // creates a list of parsed items for use in adapter
         mItems = new ArrayList<>();
-        JSONArray jArray;
         try {
-
-            jArray = response.json.getJSONObject("response").getJSONArray("items");
             for (int i = 0; i < jArray.length(); i++)
                 mItems.add(createItem(jArray.getJSONObject(i)));
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    // parses json into VKApiAttachment instance
     private VKApiAttachment createItem(JSONObject jo) throws JSONException{
 
         switch (mViewType){
@@ -87,7 +83,7 @@ public class GridItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public VKApiAttachment getItem(int i) {
         return mItems.get(i);
     }
 
@@ -121,18 +117,21 @@ public class GridItemAdapter extends BaseAdapter {
         switch (mViewType) {
             case VIEW_TYPE_ALBUM:
                 holder.itemText.setText(((VKApiPhotoAlbum) mItems.get(i)).title);
-                url = ((VKApiPhotoAlbum) mItems.get(i)).thumb_src;
+                url = pickProperSource('p', i);
+                holder.itemThumb.setAdjustViewBounds(true);
+//                url = ((VKApiPhotoAlbum) mItems.get(i)).thumb_src;
                 break;
 
             case VIEW_TYPE_PHOTO:
-//                url = ((VKApiPhoto) mItems.get(i)).src.get(1).src;
                 url = pickProperSource('m', i);
+
                 break;
         }
-
+        // loads image asynchronously and stops progress on success
         Picasso.with(mContext)
                 .load(url)
                 .resize(mThumbWidth, mThumbHeigth)
+                .centerCrop()
                 .centerCrop()
                 .into(holder.itemThumb,
                         new PicassoCallback(holder.itemThumbProgress) {
@@ -146,17 +145,33 @@ public class GridItemAdapter extends BaseAdapter {
                                 super.onError();
                             }
                         });
+
         return convertView;
     }
 
+    // picks proper sizes from VKPhotoSizes list returned by request
     public String pickProperSource(char type, int i) {
 
-        VKPhotoSizes sizes = ((VKApiPhoto) getItem(i)).src;
+        VKPhotoSizes sizes = null;
+        switch (mViewType){
+
+            case VIEW_TYPE_PHOTO:
+
+                sizes = ((VKApiPhoto) getItem(i)).src;
+                break;
+
+            case VIEW_TYPE_ALBUM:
+
+                sizes = ((VKApiPhotoAlbum) getItem(i)).photo;
+                break;
+        }
+
         for (VKApiPhotoSize size : sizes) {
             if (size.type == type)
                 return size.src;
         }
-        if (type == 'm')
+        // if not found
+        if (type == 'm' | type == 'q')
             return sizes.get(1).src;
         else
             return sizes.get(sizes.size()-1).src;

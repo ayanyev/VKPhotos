@@ -18,7 +18,8 @@ public class PhotosActivity extends GenericActivity {
         super.onCreate(savedInstanceState);
 
         setTitle(getIntent().getStringExtra(ALBUM_TITLE_KEY));
-        fillGridWithItems(VIEW_TYPE_PHOTO);
+        if (isConnected())
+            fillGridWithItems(VIEW_TYPE_PHOTO);
     }
 
     @Override

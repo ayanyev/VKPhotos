@@ -10,6 +10,24 @@
     tools:context=".AlbumActivity">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/emptyGrid"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sync"
+        android:layout_below="@+id/emptyGrid"
+        android:layout_centerInParent="true"
+        android:src="@drawable/sync"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -18,7 +18,6 @@ import static com.tz.vkphotos.GenericActivity.*;
 
 public class PhotoActivity extends AppCompatActivity{
 
-    @Bind(R.id.item_layout) RelativeLayout layout;
     @Bind(R.id.item_thumb) ImageView photoView;
     @Bind(R.id.item_name) TextView photoText;
     @Bind(R.id.item_thumb_progress) ProgressBar photoProgress;

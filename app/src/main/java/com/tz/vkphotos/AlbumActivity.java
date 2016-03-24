@@ -41,11 +41,13 @@ public class AlbumActivity extends GenericActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!VKSdk.isLoggedIn())
-            VKSdk.login(this, scope);
-        else {
-            setTitle(R.string.albums);
-            fillGridWithItems(VIEW_TYPE_ALBUM);
+        if (isConnected()) {
+            if (!VKSdk.isLoggedIn())
+                VKSdk.login(this, scope);
+            else {
+                setTitle(R.string.albums);
+                fillGridWithItems(VIEW_TYPE_ALBUM);
+            }
         }
     }
 

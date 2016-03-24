@@ -8,4 +8,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="albums">Альбомы</string>
     <string name="back_to_album">назад к альбому</string>
+    <string name="zero_albums">не найдено альбомов</string>
+    <string name="zero_photos">этот альбом пуст</string>
+    <string name="error">что-то пошло не так :(</string>
+    <string name="no_internet">включите интернет и обновите</string>
 </resources>
