@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">VKphotos</string>
+    <string name="logout">Выход</string>
+    <integer name="com_vk_sdk_AppId">5370376</integer>
+
+    <string name="title_activity_photo">PhotoActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="albums">Альбомы</string>
+    <string name="back_to_album">назад к альбому</string>
+</resources>

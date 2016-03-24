@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="2dp"
+    android:background="@color/colorGridBackground"
+    android:id="@+id/item_layout">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/item_thumb"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorItemPlaceholder"
+        android:minWidth="@dimen/album_thumb_width" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_thumb_progress"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:indeterminate="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:text="New Text"
+        android:id="@+id/item_name"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="gravity"
+        android:gravity="center_vertical|center_horizontal"
+        android:maxLines="2"
+        android:layout_alignParentEnd="false"
+        android:background="@color/colorItemNameBackground"
+        android:textColor="@color/colorTextInverse"
+        android:layout_alignBottom="@+id/item_thumb" />
+</RelativeLayout>
